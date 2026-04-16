@@ -1,8 +1,8 @@
 /**
  * ================================================
  * PROG5121 - Part 1
- * Author    : Your Full Name
- * Student No: Your Student Number
+ * Author    : thato thulo
+ * Student No: st10513700
  * Date      : April 2026
  * Purpose   : Unit tests for the Login class
  * ================================================
