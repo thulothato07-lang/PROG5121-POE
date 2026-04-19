@@ -9,14 +9,14 @@
  */
 public class Login {
 
-    // ── User Details ──────────────────────────────
+    //  The user Details
     private String firstName;
     private String lastName;
     private String username;
     private String password;
     private String cellNumber;
 
-    // ── Constructor ───────────────────────────────
+    //  The Constructor 
     public Login(String firstName, String lastName,
                  String username, String password,
                  String cellNumber) {
@@ -27,14 +27,14 @@ public class Login {
         this.cellNumber = cellNumber;
     }
 
-    // ═════════════════════════════════════════════
+    // 
     // VALIDATION METHODS
-    // ═════════════════════════════════════════════
+    // 
 
     /*
-     * Validates the username:
+     * This validates the username:
      * - Must contain an underscore
-     * - Must be 5 characters or less
+     * - And must be 5 characters or less
      */
     public boolean checkUserName() {
         boolean hasUnderscore = username.contains("_");
@@ -43,8 +43,8 @@ public class Login {
     }
 
     /*
-     * Validates the password:
-     * - Minimum 8 characters
+     * This validates the password:
+     * - A minimum of 8 characters
      * - Must have a capital letter
      * - Must have a number
      * - Must have a special character
@@ -71,7 +71,7 @@ public class Login {
     }
 
     /*
-     * Validates the cell number using regex:
+     * This validates the cell number using regex:
      * - Must start with + and country code
      * - Must be correct length
      * Reference: docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html
@@ -81,12 +81,12 @@ public class Login {
         return cellNumber.matches(pattern);
     }
 
-    // ═════════════════════════════════════════════
+    // 
     // REGISTRATION METHOD
-    // ═════════════════════════════════════════════
+    // 
 
     /*
-     * Registers the user if all validations pass.
+     * This registers the user if all validations pass.
      * Checks username first, then password, then cell.
      * Returns appropriate message for each outcome.
      */
@@ -117,12 +117,12 @@ public class Login {
              + "Cell number successfully captured.";
     }
 
-    // ═════════════════════════════════════════════
+    // 
     // LOGIN METHODS
-    // ═════════════════════════════════════════════
+    // 
 
     /*
-     * Checks if the entered credentials match
+     * This checks if the entered credentials match
      * what was saved during registration.
      */
     public boolean loginUser(String inputUsername,
@@ -147,9 +147,9 @@ public class Login {
         return "Username or password incorrect, please try again.";
     }
 
-    // ═════════════════════════════════════════════
+    // 
     // GETTERS
-    // ═════════════════════════════════════════════
+    //
     public String fetchUsername()   { return username; }
     public String fetchPassword()   { return password; }
     public String fetchFirstName()  { return firstName; }
