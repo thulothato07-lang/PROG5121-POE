@@ -27,9 +27,9 @@ public class Login {
         this.cellNumber = cellNumber;
     }
 
-    // 
+    
     // VALIDATION METHODS
-    // 
+
 
     /*
      * This validates the username:
@@ -81,9 +81,9 @@ public class Login {
         return cellNumber.matches(pattern);
     }
 
-    // 
+     
     // REGISTRATION METHOD
-    // 
+    
 
     /*
      * This registers the user if all validations pass.
@@ -117,9 +117,9 @@ public class Login {
              + "Cell number successfully captured.";
     }
 
-    // 
+    
     // LOGIN METHODS
-    // 
+    
 
     /*
      * This checks if the entered credentials match
@@ -147,9 +147,9 @@ public class Login {
         return "Username or password incorrect, please try again.";
     }
 
-    // 
+    
     // GETTERS
-    //
+    
     public String fetchUsername()   { return username; }
     public String fetchPassword()   { return password; }
     public String fetchFirstName()  { return firstName; }
