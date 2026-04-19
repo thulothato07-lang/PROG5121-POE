@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 
 public class LoginTest {
 
-    // ── Test user used across login tests ─────────
+    //  Test user used across login tests 
     private Login createTestUser() {
         return new Login(
             "John", "Doe",
@@ -21,9 +21,9 @@ public class LoginTest {
         );
     }
 
-    // ═════════════════════════════════════════════
+    
     // USERNAME TESTS
-    // ═════════════════════════════════════════════
+    
 
     @Test
     public void verifyUsernameIsValid() {
@@ -51,9 +51,9 @@ public class LoginTest {
         );
     }
 
-    // ═════════════════════════════════════════════
+    
     // PASSWORD TESTS
-    // ═════════════════════════════════════════════
+    
 
     @Test
     public void verifyPasswordIsStrong() {
@@ -81,9 +81,9 @@ public class LoginTest {
         );
     }
 
-    // ═════════════════════════════════════════════
+
     // CELL PHONE TESTS
-    // ═════════════════════════════════════════════
+    
 
     @Test
     public void verifyCellNumberIsValid() {
@@ -111,9 +111,9 @@ public class LoginTest {
         );
     }
 
-    // ═════════════════════════════════════════════
+    
     // LOGIN TESTS
-    // ═════════════════════════════════════════════
+    
 
     @Test
     public void verifyLoginPasses() {
@@ -133,9 +133,9 @@ public class LoginTest {
         );
     }
 
-    // ═════════════════════════════════════════════
+    
     // LOGIN STATUS MESSAGE TESTS
-    // ═════════════════════════════════════════════
+    
 
     @Test
     public void verifyWelcomeMessage() {
