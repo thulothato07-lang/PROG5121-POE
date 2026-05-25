@@ -1,0 +1,154 @@
+/**
+ * ================================================
+ * PROG5121 - Part 2
+ * Author    : Your Full Name
+ * Student No: Your Student Number
+ * Date      : May 2026
+ * Purpose   : Main entry point — Registration, Login,
+ *             and QuickChat messaging menu
+ * ================================================
+ */
+
+public class Login {
+
+    //  Fields 
+    private String firstName;
+    private String lastName;
+    private String username;
+    private String password;
+    private String cellNumber;
+
+    // Constructor 
+    public Login(String firstName, String lastName,
+                 String username, String password,
+                 String cellNumber) {
+        this.firstName  = firstName;
+        this.lastName   = lastName;
+        this.username   = username;
+        this.password   = password;
+        this.cellNumber = cellNumber;
+    }
+
+
+     
+    // VALIDATION METHODS
+     
+
+    /*
+     * Validates the username:
+     * - Must contain an underscore
+     * - Must be 5 characters or fewer
+     */
+    public boolean checkUserName() {
+        boolean hasUnderscore = username.contains("_");
+        boolean correctLength = username.length() <= 5;
+        return hasUnderscore && correctLength;
+    }
+
+    /*
+     * Validates the password:
+     * - Minimum 8 characters
+     * - It must contain a capital letter
+     * - Must contain a number
+     * - Must contain a special character
+     */
+    public boolean checkPasswordComplexity() {
+        if (password.length() < 8) {
+            return false;
+        }
+
+        boolean hasCapital = false;
+        boolean hasNumber  = false;
+        boolean hasSpecial = false;
+
+        for (char character : password.toCharArray()) {
+            if (Character.isUpperCase(character)) {
+                hasCapital = true;
+            } else if (Character.isDigit(character)) {
+                hasNumber = true;
+            } else if (!Character.isLetterOrDigit(character)) {
+                hasSpecial = true;
+            }
+        }
+        return hasCapital && hasNumber && hasSpecial;
+    }
+
+    /*
+     * Validates the cell number:
+     * - Must start with + and country code
+     * - Must have correct length
+     */
+    public boolean checkCellPhoneNumber() {
+        String pattern = "^\\+\\d{1,3}\\d{7,10}$";
+        return cellNumber.matches(pattern);
+    }
+
+
+     
+    // REGISTRATION METHOD
+    
+
+    /*
+     * Registers the user if all validations pass.
+     * Checks username first, then password, then cell.
+     */
+    public String registerUser() {
+        if (!checkUserName()) {
+            return "Username is not correctly formatted; please ensure that your "
+                 + "username contains an underscore and is no more than "
+                 + "five characters in length.";
+        }
+
+        if (!checkPasswordComplexity()) {
+            return "Password is not correctly formatted; please ensure that the "
+                 + "password contains at least eight characters, a capital "
+                 + "letter, a number, and a special character.";
+        }
+
+        if (!checkCellPhoneNumber()) {
+            return "Cell phone number incorrectly formatted or does not "
+                 + "contain international code.";
+        }
+
+        return "Username successfully captured.\n"
+             + "Password successfully captured.\n"
+             + "Cell number successfully captured.";
+    }
+
+
+     
+    // LOGIN METHODS
+     
+
+    /*
+     * Checks if the entered credentials match
+     * what was saved during registration.
+     */
+    public boolean loginUser(String inputUsername, String inputPassword) {
+        boolean usernameMatch = this.username.equals(inputUsername);
+        boolean passwordMatch = this.password.equals(inputPassword);
+        return usernameMatch && passwordMatch;
+    }
+
+    /*
+     * Returns a welcome message if login succeeds,
+     * or an error message if login fails.
+     */
+    public String returnLoginStatus(String inputUsername,
+                                    String inputPassword) {
+        if (loginUser(inputUsername, inputPassword)) {
+            return "Welcome " + firstName + " " + lastName
+                 + " it is great to see you.";
+        }
+        return "Username or password incorrect, please try again.";
+    }
+
+
+     
+    // GETTERS
+    
+    public String fetchUsername()  { return username;  }
+    public String fetchPassword()  { return password;  }
+    public String fetchFirstName() { return firstName; }
+    public String fetchLastName()  { return lastName;  }
+}
