@@ -1,18 +1,15 @@
 /**
  * ================================================
- * PROG5121 - Part 1 & 2
- * Author    : Your Full Name
- * Student No: Your Student Number
- * Date      : May 2026
- * Purpose   : Main entry point — Registration, Login,
- *             and QuickChat messaging menu
+ * PROG5121 - Part 3
+ * Purpose   : Main entry point.This extends Part 2 with
+ *             a "Stored Messages" menu and all six
+ *             sub-options required by the brief.
  * ================================================
  */
 import java.util.Scanner;
 
 public class App {
 
-    // ONE Scanner for the entire program
     private static final Scanner input = new Scanner(System.in);
 
     public static void main(String[] args) {
@@ -20,9 +17,9 @@ public class App {
         
         // PART 1 — Registration
         
-        System.out.println("========================================");
+        System.out.println(" ");
         System.out.println("   Welcome to the Registration System   ");
-        System.out.println("========================================\n");
+        System.out.println("=\n");
 
         System.out.print("Enter your first name: ");
         String firstName = input.nextLine();
@@ -56,9 +53,9 @@ public class App {
         boolean loginPassed = false;
 
         if (registrationPassed) {
-            System.out.println("\n========================================");
+            System.out.println("\n=");
             System.out.println("              Login                     ");
-            System.out.println("========================================\n");
+            System.out.println("=\n");
 
             System.out.print("Enter your username: ");
             String loginUsername = input.nextLine();
@@ -76,9 +73,11 @@ public class App {
         }
 
         
-        // PART 2 — QuickChat (only if login succeeded)
-        
+        // PART 2 & 3 — QuickChat (only if login succeeded)
+       
         if (loginPassed) {
+            // Load any messages already stored on disk before showing the menu
+            Message.loadStoredMessagesFromJSON();
             runQuickChat();
         }
 
@@ -86,17 +85,16 @@ public class App {
     }
 
 
-  
-    // QUICKCHAT MAIN MENU
+    
+    // QUICKCHAT MAIN MENU  (updated for Part 3)
     
 
     private static void runQuickChat() {
 
-        System.out.println("\n   ");
-        System.out.println("  Welcome to QuickChat.");
-        System.out.println("\n   ");
+        System.out.println("\n=");
+        System.out.println("       Welcome to QuickChat.            ");
+        System.out.println("=\n");
 
-        // Ask how many messages to send upfront
         int numMessages = 0;
         while (numMessages <= 0) {
             System.out.print("How many messages do you wish to send? ");
@@ -114,13 +112,14 @@ public class App {
         boolean running = true;
 
         while (running) {
-            System.out.println("\n  ");
+            System.out.println("\n-");
             System.out.println("            QuickChat Menu              ");
-            System.out.println("  ");
+            System.out.println("-");
             System.out.println("  1) Send Messages");
             System.out.println("  2) Show Recently Sent Messages");
-            System.out.println("  3) Quit");
-            System.out.println("  ");
+            System.out.println("  3) Stored Messages");   // NEW — Part 3
+            System.out.println("  4) Quit");
+            System.out.println("-");
             System.out.print("Enter your choice: ");
 
             String menuChoice = input.nextLine().trim();
@@ -131,11 +130,14 @@ public class App {
                     break;
 
                 case "2":
-                    // Feature still in development
-                    System.out.println("\nComing Soon.");
+                    showRecentlySentMessages();
                     break;
 
                 case "3":
+                    storedMessagesMenu();     // NEW — Part 3
+                    break;
+
+                case "4":
                     running = false;
                     System.out.println(
                         "\nThank you for using QuickChat. Goodbye!");
@@ -143,15 +145,15 @@ public class App {
 
                 default:
                     System.out.println(
-                        "Invalid option. Please enter 1, 2, or 3.");
+                        "Invalid option. Please enter 1, 2, 3, or 4.");
             }
         }
     }
 
 
-     
-    // SEND MESSAGES FLOW
-     
+    
+    // SEND MESSAGES FLOW  (Specifically unchanged from Part 2)
+    
 
     private static void sendMessages(int numMessages) {
 
@@ -159,11 +161,11 @@ public class App {
 
         for (int i = 0; i < numMessages; i++) {
 
-            System.out.println("\n Message " + (i + 1)
-                             + " of " + numMessages + " ");
+            System.out.println("\n======== Message " + (i + 1)
+                             + " of " + numMessages + " ========");
 
             //  Recipient validation 
-            String recipient    = "      ";
+            String  recipient      = "";
             boolean validRecipient = false;
 
             while (!validRecipient) {
@@ -177,7 +179,7 @@ public class App {
                 validRecipient = cellCheck.contains("successfully captured");
             }
 
-            //  Message text validation 
+            // Message text validation
             String  messageText  = "";
             boolean validMessage = false;
 
@@ -198,7 +200,7 @@ public class App {
                 }
             }
 
-            //  Create message & validate ID 
+            // Create message & validate ID 
             Message message = new Message(recipient, messageText);
 
             if (!message.checkMessageID()) {
@@ -208,7 +210,7 @@ public class App {
                 continue;
             }
 
-            //  Show generated hash 
+            // Show generated hash
             String hash = message.createMessageHash();
             System.out.println("Message Hash : " + hash);
 
@@ -223,7 +225,7 @@ public class App {
             String sendResult = message.sentMessage(actionChoice);
             System.out.println(sendResult);
 
-            //  Display full details if sent 
+            // Display full details if sent 
             if (sendResult.equals("Message successfully sent")) {
                 System.out.println("\n--- Message Details ---");
                 System.out.println("Message ID   : " + message.getMessageID());
@@ -235,14 +237,104 @@ public class App {
             lastMessage = message;
         }
 
-        // Display total messages sent after all have been processed
         if (lastMessage != null) {
             System.out.println(
-                "\n  ");
+                "\n=");
             System.out.println("Total messages sent: "
                              + lastMessage.returnTotalMessages());
             System.out.println(
-                "  ");
+                "=");
+        }
+    }
+
+
+   
+    // SHOW RECENTLY SENT MESSAGES  (The Part 2 retained)
+    
+
+    private static void showRecentlySentMessages() {
+        if (Message.getSentMessagesArray().isEmpty()) {
+            System.out.println("\nNo messages have been sent yet.");
+            return;
+        }
+        System.out.println("\n========== Recently Sent Messages ==========");
+        for (String msg : Message.getSentMessagesArray()) {
+            System.out.println(msg);
+            System.out.println("--");
+        }
+    }
+
+
+   
+    // STORED MESSAGES MENU  (NEW — Part 3)
+    
+
+    private static void storedMessagesMenu() {
+
+        boolean back = false;
+
+        while (!back) {
+            System.out.println("\n-");
+            System.out.println("        Stored Messages Menu            ");
+            System.out.println("-");
+            System.out.println("  a) Display sender & recipient of all stored messages");
+            System.out.println("  b) Display the longest stored message");
+            System.out.println("  c) Search for a message by ID");
+            System.out.println("  d) Search all messages for a recipient");
+            System.out.println("  e) Delete a message using its hash");
+            System.out.println("  f) Display full report of all stored messages");
+            System.out.println("  0) Back to main menu");
+            System.out.println("-");
+            System.out.print("Enter your choice: ");
+
+            String choice = input.nextLine().trim().toLowerCase();
+
+            switch (choice) {
+
+                case "a":
+                    System.out.println(
+                        Message.displayStoredSendersAndRecipients());
+                    break;
+
+                case "b":
+                    System.out.println(
+                        Message.displayLongestStoredMessage());
+                    break;
+
+                case "c":
+                    System.out.print("Enter the Message ID to search: ");
+                    String searchID = input.nextLine().trim();
+                    System.out.println(
+                        Message.searchByMessageID(searchID));
+                    break;
+
+                case "d":
+                    System.out.print("Enter the recipient number to search: ");
+                    String searchRecipient = input.nextLine().trim();
+                    System.out.println(
+                        Message.searchByRecipient(searchRecipient));
+                    break;
+
+                case "e":
+                    System.out.print("Enter the Message Hash to delete: ");
+                    String deleteHash = input.nextLine().trim();
+                    System.out.println(
+                        Message.deleteByMessageHash(deleteHash));
+                    break;
+
+                case "f":
+                    System.out.println(
+                        Message.displayFullReport());
+                    break;
+
+                case "0":
+                    back = true;
+                    break;
+
+                default:
+                    System.out.println(
+                        "Invalid option. Please enter a, b, c, d, e, f, or 0.");
+            }
         }
     }
 }
